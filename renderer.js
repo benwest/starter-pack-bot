@@ -125,7 +125,7 @@ var meme = async ({ title, images, words }) => {
     ctx.font = '42px Arial';
     
     for ( var word of sampleSize( words, rand( 2, 5 ) ) ) {
-        var sz = [ ctx.measureText( word ).width, 30 ];
+        var sz = [ ctx.measureText( word ).width, 45 ];
         var p = findPosition( sz, size, filled );
         if ( p ) {
             console.log( 'writing ' + word );

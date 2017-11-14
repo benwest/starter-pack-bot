@@ -3,13 +3,9 @@ var fs = require('fs');
 var { createCanvas, loadImage, registerFont } = require('canvas')
 var sampleSize = require('lodash/sampleSize');
 
-// var width = 1400;
-// var height = 1000;
-
 var size = [ 1400, 1000 ];
 
 registerFont( 'Arial.ttf', { family: 'Arial' } );
-// var init = () => new Promise( resolve => Image.registerFont('./Arial.ttf', 'Arial' ).load( resolve ) );
 
 var tail = arr => arr[ arr.length - 1 ];
 
@@ -26,48 +22,6 @@ var download = url => new Promise( ( resolve, reject ) => {
 })
 
 var cleanup = path => new Promise( resolve => fs.unlink( path, resolve ) )
-
-var getDecoder = url => {
-    url = url.toLowerCase();
-    if ( url.endsWith('.jpg') || url.endsWith( '.jpeg' ) ) return Image.decodeJPEGFromStream;
-    if ( url.endsWith('.png') ) return Image.decodePNGFromStream;
-    throw new Error( 'Unknown format: ' + url );
-}
-
-var decode = async path => {
-    var low = path.toLowerCase();
-    var stream = fs.createReadStream( path );
-    if ( low.endsWith('.jpg') || low.endsWith( '.jpeg' ) ) {
-        return await Image.decodeJPEGFromStream( stream );
-    } else if ( low.endsWith('.png') ) {
-        return await Image.decodePNGFromStream( stream );
-    } else {
-        throw new Error( 'Unknown format: ' + path );
-    }
-    // var img;
-    // try {
-        
-    // } catch ( e ) {
-    //     console.log( "\tcan't decode" );
-    // }
-    // return {
-    //     size: [ img.width, img.height ],
-    //     draw: async ( ctx, x, y, w, h ) => {
-    //         try {
-    //             console.log('\tDrawing')
-    //             ctx.drawImage( img, 0, 0, img.width, img.height, x, y, w, h );
-    //             console.log('\tDone')
-    //         } catch ( e ) { console.log('\tfailed') }
-    //         await cleanup( path );
-    //     },
-    //     abort: async () => await cleanup( path )
-    // }
-}
-
-var drawImage = ( ctx, img, x, y, w, h ) => {
-    console.log('\tDrawing');
-    
-}
 
 var intersects = ( box1, box2 ) => {
     var xyrb = box => [
@@ -182,47 +136,13 @@ var meme = async ({ title, images, words }) => {
         }
     }
     
-    // for ( var url of images.main ) {
-    //     var box = findBox( size, [ width, height ], filled, 500 );
-    //     try {
-    //         var { size, draw, abort } = await getImage( url );
-    //         var box = findBox( size, [ width, height ], filled, 200 );
-    //         if ( box ) {
-    //             filled.push( box );
-    //             await draw( ctx, ...box );
-    //         } else {
-    //             console.log('no room');
-    //             await abort();
-    //         }
-    //     } catch ( e ) {
-    //         console.log('\tfailed')
-    //     };
-    // }
-    
-    // ctx.font = '24px Arial';
-    
-    // for ( var text of sampleSize( links, rand( 1, 5 ) ) ) {
-    //     var size = [ text.length * 15, 30 ];
-    //     var p = findPosition( size, [ width, height ], filled );
-    //     if ( p ) {
-    //         console.log( 'writing ' + text );
-    //         filled.push( [...p, ...size ] );
-    //         ctx.fillText( text, p[ 0 ], p[ 1 ] + 24 );
-    //     } else {
-    //         console.log('no space');
-    //     }
-    // }
-    
     var filename = __dirname + '/img/' + title + '.png';
     
     console.log('saving', filename );
     
     return await save( canvas, filename );
     
-    // await Image.encodePNGToStream( image, fs.createWriteStream( './img/' + filename ) );
-    
-    // return filename;
-    
+
 }
 
 module.exports = meme;

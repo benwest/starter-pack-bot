@@ -1,8 +1,6 @@
 var fs = require('fs');
 var Twit = require('twit');
 
-console.log(process.env)
-
 var twit = new Twit({
     consumer_key: process.env.CONSUMER_KEY,
     consumer_secret: process.env.CONSUMER_SECRET,

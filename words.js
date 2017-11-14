@@ -30,6 +30,7 @@ module.exports = async page => {
     var backlinks = await page.backlinks();
     return uniq( [ ...links, ...backlinks ] )
         .filter( oneWord )
+        .filter( notBlacklisted )
         .filter( notNamespaced )
         .filter( link => !title.toLowerCase().includes( link.toLowerCase() ) )
 }

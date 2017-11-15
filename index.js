@@ -5,6 +5,8 @@ var getImages = require('./images');
 var renderer = require('./renderer');
 var tweet = require('./tweet');
 
+var interval = process.argv[ 2 ] ? Number( process.argv[ 2 ] ) : 60;
+
 var randomTitle = async () => await wiki.random( 1 ).then( r => r[ 0 ] );
 
 var search = async title => {
@@ -28,8 +30,8 @@ var go = async () => {
     var path = await renderer( r );
     setTimeout( async () => {
         await tweet( r.title + ' starter pack', path )
-        console.log('sleeping')
-        setTimeout( go, 1000 * 60 * 30 );
+        console.log(`see you in ${ interval }`)
+        setTimeout( go, 1000 * 60 * interval );
     }, 500 );
 }
 

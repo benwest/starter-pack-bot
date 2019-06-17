@@ -24,7 +24,7 @@ var collectImages = async ( urls, max ) => {
 module.exports = async ( wiki, page ) => {
     var urls = await page.images();
     var mainImages = await collectImages( urls, 4 );
-    if ( mainImages.length === 0 ) throw new Error('no image');
+    // if ( mainImages.length === 0 ) throw new Error('no image');
     console.log( mainImages.length + '/8' );
     var links = shuffle( await page.links() );
     var relatedImages = [];

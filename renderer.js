@@ -98,7 +98,7 @@ var save = ( canvas, path ) => new Promise( resolve => {
     var out = fs.createWriteStream( path );
     var stream = canvas.pngStream();
     stream.on('data', chunk => out.write( chunk ) );
-    stream.on('end', () => resolve( path ) );
+    stream.on('close', () => resolve( path ) );
 })
 
 var meme = async ({ title, images, words }) => {

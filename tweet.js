@@ -13,16 +13,35 @@ var upload = data => new Promise( ( resolve, reject ) => twit.post('media/upload
     resolve( data.media_id_string );
 }))
 
-var post = ( status, imageID ) => new Promise( ( resolve, reject ) => twit.post( 'statuses/update', { media_ids: [ imageID ], status }, ( err, data ) => {
+var post = options => new Promise( ( resolve, reject ) => twit.post( 'statuses/update', options, ( err, data ) => {
     if ( err ) return reject( err );
     resolve( data );
 }));
 
-module.exports = async ( text, imagePath ) => {
-    console.log('read', imagePath);
-    var data = fs.readFileSync( imagePath, { encoding: 'base64' } );
-    console.log('uploading');
-    var id = await upload( data );
+var tweet = async ( options = {}, imagePath ) => {
+    if ( imagePath ) {
+        console.log('read', imagePath);
+        var data = fs.readFileSync( imagePath, { encoding: 'base64' } );
+        console.log('uploading');
+        var imageID = await upload( data );
+        options = Object.assign({ media_ids: [ imageID ]}, options )
+    }
     console.log('tweeting');
-    await post( text, id );
+    return await post( options );
 }
+
+var mentions = twit.stream('statuses/filter', { track: '@starterpackbot'});
+mentions.start();
+
+var onMention = fn => {
+    console.log('listening...')
+    mentions.on( 'tweet', tweet => {
+        console.log( tweet.text );
+        if (tweet.text.indexOf('@starterpackbot') > -1) {
+            console.log( 'a tweet', tweet.text );
+            fn( tweet );
+        }
+    })
+}
+
+module.exports = { tweet, onMention };
